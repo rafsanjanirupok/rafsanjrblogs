@@ -1,1 +1,37 @@
+name: Build iOS App
 
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Build Xcode Project
+      run: |
+        xcodebuild clean archive \
+          -project RJRHub/RJRHub.xcodeproj \
+          -scheme RJRHub \
+          -configuration Release \
+          -archivePath $PWD/build/RJRHub.xcarchive \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO \
+          CODE_SIGNING_ALLOWED=NO
+
+    - name: Export Unsigned IPA
+      run: |
+        mkdir -p Payload
+        cp -r build/RJRHub.xcarchive/Products/Applications/RJRHub.app Payload/
+        zip -r RJRHub-Unsigned.ipa Payload
+
+    - name: Upload IPA Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: RJRHub-Unsigned-IPA
+        path: RJRHub-Unsigned.ipa
