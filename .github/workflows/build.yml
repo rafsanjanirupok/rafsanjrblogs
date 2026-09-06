@@ -28,7 +28,7 @@ jobs:
     - name: Export Unsigned IPA
       run: |
         mkdir -p Payload
-        cp -r DerivedData/Build/Products/Release-iphoneos/RJRHub.app Payload/
+        find DerivedData -name "*.app" -exec cp -R {} Payload/ \;
         zip -r RJRHub-Unsigned.ipa Payload
 
     - name: Upload IPA Artifact
