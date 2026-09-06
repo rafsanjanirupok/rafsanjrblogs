@@ -15,11 +15,12 @@ jobs:
 
     - name: Build Xcode Project
       run: |
-        xcodebuild clean archive \
+        xcodebuild clean build \
           -project RJRHub/RJRHub.xcodeproj \
           -scheme RJRHub \
           -configuration Release \
-          -archivePath $PWD/build/RJRHub.xcarchive \
+          -sdk iphoneos \
+          -derivedDataPath $PWD/DerivedData \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO \
           CODE_SIGNING_ALLOWED=NO
@@ -27,7 +28,7 @@ jobs:
     - name: Export Unsigned IPA
       run: |
         mkdir -p Payload
-        cp -r build/RJRHub.xcarchive/Products/Applications/RJRHub.app Payload/
+        cp -r DerivedData/Build/Products/Release-iphoneos/RJRHub.app Payload/
         zip -r RJRHub-Unsigned.ipa Payload
 
     - name: Upload IPA Artifact
