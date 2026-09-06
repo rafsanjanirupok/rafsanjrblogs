@@ -7,9 +7,8 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        WebView()
-            .ignoresSafeArea()
-            .persistentSystemOverlays(.hidden) // hides the home indicator affordance bar area where possible
+        // Your webview code will remain, just without the safe area modifier attached below it
+        WebView(url: URL(string: "https://rafsanjanirupok.com/")!) 
     }
 }
 
